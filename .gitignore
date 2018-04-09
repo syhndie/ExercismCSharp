@@ -1,5 +1,4 @@
 ##Ignore all but the .cs files
-.md
 .csproj
 .sln
 
@@ -266,4 +265,4 @@ __pycache__/
 *.pyc
 *.csproj
 *.sln
-*.md
+
