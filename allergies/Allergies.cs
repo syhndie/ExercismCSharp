@@ -21,13 +21,13 @@ public class Allergies
 
     public Allergies(int mask)
     {
-        MaskTrimmed = mask %=256;
+        mask %= 256;
+        MaskTrimmed = mask;
         MaskEnum = (Allergen)mask;
     }
 
     public bool IsAllergicTo(string allergy)
     {
-
         if (Enum.TryParse(allergy, out Allergen allergyEnum))
         {
             int allergyEnumValue = (int)allergyEnum;
