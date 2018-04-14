@@ -21,11 +21,7 @@ public class Allergies
 
     public Allergies(int mask)
     {
-        while (mask > 255)
-        {
-            mask = mask - 256; 
-        }
-        MaskTrimmed = mask;
+        MaskTrimmed = mask %=256;
         MaskEnum = (Allergen)mask;
     }
 
