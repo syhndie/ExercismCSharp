@@ -38,7 +38,7 @@ public class Allergies
 
     public IList<string> List()
     {
-        if ((int)MaskEnum == 0) return new List<string>();
+        if (MaskTrimmed == 0) return new List<string>();
         return MaskEnum.ToString().Split(", ");
     }
 }
