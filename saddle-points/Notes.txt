@@ -1,0 +1,20 @@
+﻿example :
+	 4 5 4 maxRow0 5    9 8 7  maxRow0 9   
+     3 5 5 maxRow1 5    5 3 2  maxRow1 5
+     1 5 4 maxRow2 5    6 6 7  maxRow2 7
+                   
+     m m m              m m m
+	 i i i              i i i
+	 n n n              n n n
+     C C C              C C C
+     o o o              o o o
+     l l l              l l l
+     0 1 2              0 1 2
+  
+	 1 5 4              5 3 2
+							 
+	 for each row, find max value: something like maxRow0 = 5, maxRow1 = 5, maxRow2 = 5 
+	 for each column, find min value: something like minCol0 = 1, minCol1 = 5, minCol2 = 4
+
+	 for each element 
+	 
