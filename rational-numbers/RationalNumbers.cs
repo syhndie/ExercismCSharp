@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 
-//Exponentiation of a real number `x` to a rational number `r = a/b`
-//this = a/b
-//x^(a/b) = root(x^a, b)`, where `root(p, q)` is the `q`th root of `p`.
 public static class RealNumberExtension
 {
     public static double Expreal(this int realNumber, RationalNumber r)
@@ -38,10 +35,6 @@ public struct RationalNumber
         }
     }
 
-    //The sum of two rational numbers 
-    //this = a1/b1
-    //r = a2/b2 
-    //this + r = a1/b1 + a2/b2 = (a1 * b2 + a2 * b1) / (b1 * b2)
     public RationalNumber Add(RationalNumber r)
     {
         int sumnum = this.Numerator * r.Denominator + r.Numerator * this.Denominator;
@@ -54,10 +47,6 @@ public struct RationalNumber
         return r1.Add(r2);
     }
 
-    //The difference of two rational numbers
-    //this= a1/b1
-    //r = a2/b2
-    //this - r = a1/b1 - a2/b2 = (a1* b2 - a2* b1) / (b1* b2)
     public RationalNumber Sub(RationalNumber r)
     {
         int difnum = this.Numerator * r.Denominator - r.Numerator * this.Denominator;
@@ -70,10 +59,6 @@ public struct RationalNumber
         return r1.Sub(r2);
     }
 
-    //The product(multiplication) of two rational numbers
-    //this = a1/b1
-    //r = a2/b2
-    //this * r = (a1 * a2) / (b1 * b2)
     public RationalNumber Mul(RationalNumber r)
     {
         int prodnum = this.Numerator * r.Numerator;
@@ -86,10 +71,6 @@ public struct RationalNumber
         return r1.Mul(r2);
     }
 
-    //Dividing a rational number
-    //this = a1/b1
-    //r = a2/b2
-    //this / r = (a1 * b2) / (a2 * b1)` if `a2 * b1` is not zero.
     public RationalNumber Div(RationalNumber r)
     {
         int quotnum = this.Numerator * r.Denominator;
@@ -102,9 +83,6 @@ public struct RationalNumber
         return r1.Div(r2);
     }
 
-    //The absolute value `|r|` of the rational number
-    //this = a/b
-    //absolute value = |a|/|b|
     public RationalNumber Abs()
     {
         this.Numerator = Math.Abs(this.Numerator);
@@ -117,11 +95,6 @@ public struct RationalNumber
         return this;
     }
 
-    //Exponentiation of a rational number
-    //this = a/b
-    //power = non-negative integer: this^power = (a^power)/(b^power)
-    //power = negative integer: this^power = (b^power)/(a^power)
-    //power = 0: this^power = 1
     public RationalNumber Exprational(int power)
     {
         int exprationalnum = 1;
