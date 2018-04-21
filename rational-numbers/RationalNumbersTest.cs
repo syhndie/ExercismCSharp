@@ -137,6 +137,12 @@ public class RationalNumbersTest
     }
 
     [Fact]
+    public void Raise_a_positive_rational_number_to_a_negative_integer_power()
+    {
+        Assert.Equal(new RationalNumber(8, 1), new RationalNumber(1, 2).Exprational(-3));
+    }
+
+    [Fact]
     public void Raise_a_negative_rational_number_to_a_positive_integer_power()
     {
         Assert.Equal(new RationalNumber (-1, 8), new RationalNumber(-1, 2).Exprational(3));
@@ -171,7 +177,7 @@ public class RationalNumbersTest
     {
         Assert.Equal(16, 8.Expreal(new RationalNumber(4, 3)),0);
     }
-
+    
     [Fact]
     public void Raise_a_real_number_to_a_negative_rational_number()
     {
