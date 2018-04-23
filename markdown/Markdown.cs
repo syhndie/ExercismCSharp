@@ -1,51 +1,47 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
+//changed order of methods to reflect flow of the program
+//took single-line actions after if statements out of brackets and onto same line with if statement
+//replaced var with actual type
+
 public static class Markdown
 {
-    private static string Wrap(string text, string tag) => "<" + tag + ">" + text + "</" + tag + ">";
-
-    private static bool IsTag(string text, string tag) => text.StartsWith("<" + tag + ">");
-
-    private static string Parse(string markdown, string delimiter, string tag)
+    public static string Parse(string markdown)
     {
-        var pattern = delimiter + "(.+)" + delimiter;
-        var replacement = "<" + tag + ">$1</" + tag + ">";
-        return Regex.Replace(markdown, pattern, replacement);
+        string[] linesArray = markdown.Split('\n');
+        string result = "";
+        bool isList = false;
+
+        for (int i = 0; i < linesArray.Length; i++)
+        {
+            string lineResult = ParseLine(linesArray[i], isList, out isList);
+            result += lineResult;
+        }
+
+        if (isList) return result + "</ul>";
+        else return result;
     }
 
-    private static string Parse__(string markdown) => Parse(markdown, "__", "strong");
-
-    private static string Parse_(string markdown) => Parse(markdown, "_", "em");
-
-    private static string ParseText(string markdown, bool list)
+    private static string ParseLine(string markdown, bool list, out bool inListAfter)
     {
-        var parsedText = Parse_(Parse__((markdown)));
+        string result = ParseHeader(markdown, list, out inListAfter);
 
-        if (list)
-        {
-            return parsedText;
-        }
-        else
-        {
-            return Wrap(parsedText, "p");
-        }
+        if (result == null) result = ParseLineItem(markdown, list, out inListAfter);
+        if (result == null) result = ParseParagraph(markdown, list, out inListAfter);
+        if (result == null) throw new ArgumentException("Invalid markdown");
+
+        return result;
     }
 
     private static string ParseHeader(string markdown, bool list, out bool inListAfter)
     {
-        var count = 0;
+        int count = 0;
 
         for (int i = 0; i < markdown.Length; i++)
         {
-            if (markdown[i] == '#')
-            {
-                count += 1;
-            }
-            else
-            {
-                break;
-            }
+            if (markdown[i] == '#') count += 1;
+            else break;
         }
 
         if (count == 0)
@@ -54,8 +50,8 @@ public static class Markdown
             return null;
         }
 
-        var headerTag = "h" + count;
-        var headerHtml = Wrap(markdown.Substring(count + 1), headerTag);
+        string headerTag = "h" + count;
+        string headerHtml = Wrap(markdown.Substring(count + 1), headerTag);
 
         if (list)
         {
@@ -73,7 +69,7 @@ public static class Markdown
     {
         if (markdown.StartsWith("*"))
         {
-            var innerHtml = Wrap(ParseText(markdown.Substring(2), true), "li");
+            string innerHtml = Wrap(ParseText(markdown.Substring(2), true), "li");
 
             if (list)
             {
@@ -105,47 +101,31 @@ public static class Markdown
         }
     }
 
-    private static string ParseLine(string markdown, bool list, out bool inListAfter)
+    private static string ParseText(string markdown, bool list)
     {
-        var result = ParseHeader(markdown, list, out inListAfter);
-
-        if (result == null)
-        {
-            result = ParseLineItem(markdown, list, out inListAfter);
-        }
-
-        if (result == null)
-        {
-            result = ParseParagraph(markdown, list, out inListAfter);
-        }
-
-        if (result == null)
-        {
-            throw new ArgumentException("Invalid markdown");
-        }
-
-        return result;
-    }
-
-    public static string Parse(string markdown)
-    {
-        var lines = markdown.Split('\n');
-        var result = "";
-        var list = false;
-
-        for (int i = 0; i < lines.Length; i++)
-        {
-            var lineResult = ParseLine(lines[i], list, out list);
-            result += lineResult;
-        }
+        string parsedText = Parse_(Parse__((markdown)));
 
         if (list)
         {
-            return result + "</ul>";
+            return parsedText;
         }
         else
         {
-            return result;
+            return Wrap(parsedText, "p");
         }
     }
+
+    private static string Parse__(string markdown) => Parse(markdown, "__", "strong");
+
+    private static string Parse_(string markdown) => Parse(markdown, "_", "em");
+
+    private static string Wrap(string text, string tag) => "<" + tag + ">" + text + "</" + tag + ">";
+
+    private static string Parse(string markdown, string delimiter, string tag)
+    {
+        string pattern = delimiter + "(.+)" + delimiter;
+        string replacement = "<" + tag + ">$1</" + tag + ">";
+        return Regex.Replace(markdown, pattern, replacement);
+    }
+    private static bool IsTag(string text, string tag) => text.StartsWith("<" + tag + ">");
 }
