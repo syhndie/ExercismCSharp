@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 //replaced var with actual type
 //replaced concatanation of strings using "foo" + var + "foo" with $"foo{var}foo"
 //when if statement and else statement resulted in same action, moved that action out of the if/else block
+//changed if (not something) statements to if (something) statements
 
 public static class Markdown
 {
@@ -78,22 +79,16 @@ public static class Markdown
     private static string ParseParagraph(string markdown, bool list, out bool inListAfter)
     {
         inListAfter = false;
-        if (!list) return ParseText(markdown, list);
-        else return $"</ul>{ParseText(markdown, list)}";
+        if (list) return $"</ul>{ParseText(markdown, list)}";
+        else return ParseText(markdown, list); 
     }
 
     private static string ParseText(string markdown, bool list)
     {
         string parsedText = Parse_(Parse__((markdown)));
 
-        if (list)
-        {
-            return parsedText;
-        }
-        else
-        {
-            return Wrap(parsedText, "p");
-        }
+        if (list) return parsedText;
+        else return Wrap(parsedText, "p");
     }
 
     private static string Parse__(string markdown) => Parse(markdown, "__", "strong");
