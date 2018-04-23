@@ -19,7 +19,7 @@ public static class Markdown
             result += lineResult;
         }
 
-        if (isList) return result + "</ul>";
+        if (isList) return $"{result}</ul>";
         else return result;
     }
 
@@ -50,13 +50,13 @@ public static class Markdown
             return null;
         }
 
-        string headerTag = "h" + count;
+        string headerTag = $"h{count}";
         string headerHtml = Wrap(markdown.Substring(count + 1), headerTag);
 
         if (list)
         {
             inListAfter = false;
-            return "</ul>" + headerHtml;
+            return $"</ul>{headerHtml}";
         }
         else
         {
@@ -79,7 +79,7 @@ public static class Markdown
             else
             {
                 inListAfter = true;
-                return "<ul>" + innerHtml;
+                return $"<ul>{innerHtml}";
             }
         }
 
@@ -97,7 +97,7 @@ public static class Markdown
         else
         {
             inListAfter = false;
-            return "</ul>" + ParseText(markdown, list);
+            return $"</ul>{ParseText(markdown, list)}";
         }
     }
 
@@ -119,13 +119,13 @@ public static class Markdown
 
     private static string Parse_(string markdown) => Parse(markdown, "_", "em");
 
-    private static string Wrap(string text, string tag) => "<" + tag + ">" + text + "</" + tag + ">";
+    private static string Wrap(string text, string tag) => $"<{tag}>{text}</{tag}>";
 
     private static string Parse(string markdown, string delimiter, string tag)
     {
-        string pattern = delimiter + "(.+)" + delimiter;
-        string replacement = "<" + tag + ">$1</" + tag + ">";
+        string pattern = $"{delimiter}(.+){delimiter}";
+        string replacement = $"<{tag}>$1</{tag}>";
         return Regex.Replace(markdown, pattern, replacement);
     }
-    private static bool IsTag(string text, string tag) => text.StartsWith("<" + tag + ">");
+    private static bool IsTag(string text, string tag) => text.StartsWith($"<{tag}>");
 }
