@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 //changed order of methods to reflect flow of the program
 //took single-line actions after if statements out of brackets and onto same line with if statement
 //replaced var with actual type
+//replaced concatanation of strings using "foo" + var + "foo" with $"foo{var}foo"
+//when if statement and else statement resulted in same action, moved that action out of the if/else block
 
 public static class Markdown
 {
@@ -53,16 +55,9 @@ public static class Markdown
         string headerTag = $"h{count}";
         string headerHtml = Wrap(markdown.Substring(count + 1), headerTag);
 
-        if (list)
-        {
-            inListAfter = false;
-            return $"</ul>{headerHtml}";
-        }
-        else
-        {
-            inListAfter = false;
-            return headerHtml;
-        }
+        inListAfter = false;
+        if (list) return $"</ul>{headerHtml}";
+        else return headerHtml;
     }
 
     private static string ParseLineItem(string markdown, bool list, out bool inListAfter)
@@ -71,16 +66,9 @@ public static class Markdown
         {
             string innerHtml = Wrap(ParseText(markdown.Substring(2), true), "li");
 
-            if (list)
-            {
-                inListAfter = true;
-                return innerHtml;
-            }
-            else
-            {
-                inListAfter = true;
-                return $"<ul>{innerHtml}";
-            }
+            inListAfter = true;
+            if (list) return innerHtml;
+            else return $"<ul>{innerHtml}";
         }
 
         inListAfter = list;
@@ -89,16 +77,9 @@ public static class Markdown
 
     private static string ParseParagraph(string markdown, bool list, out bool inListAfter)
     {
-        if (!list)
-        {
-            inListAfter = false;
-            return ParseText(markdown, list);
-        }
-        else
-        {
-            inListAfter = false;
-            return $"</ul>{ParseText(markdown, list)}";
-        }
+        inListAfter = false;
+        if (!list) return ParseText(markdown, list);
+        else return $"</ul>{ParseText(markdown, list)}";
     }
 
     private static string ParseText(string markdown, bool list)
