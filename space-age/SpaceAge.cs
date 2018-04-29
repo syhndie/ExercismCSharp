@@ -2,47 +2,63 @@ using System;
 
 public class SpaceAge
 {
+    private double Seconds { get; set; }
+    private const double EarthPeriod = 31557600;
+    private const double MercuryPeriod = EarthPeriod * 0.2408467;
+    private const double VenusPeriod = EarthPeriod * 0.61519726;
+    private const double MarsPeriod = EarthPeriod * 1.8808158;
+    private const double JupiterPeriod = EarthPeriod * 11.862615;
+    private const double SaturnPeriod = EarthPeriod * 29.447498;
+    private const double UranusPeriod = EarthPeriod * 84.016846;
+    private const double NeptunePeriod = EarthPeriod * 164.79132;
+
     public SpaceAge(long seconds)
     {
+        Seconds = seconds;
+    }
+
+    private double CalculateAge(double period)
+    {
+        return Math.Round(Seconds / period, 2, MidpointRounding.AwayFromZero);
     }
 
     public double OnEarth()
     {
-        throw new NotImplementedException("You need to implement this function.");
+        return CalculateAge(EarthPeriod);
     }
 
     public double OnMercury()
     {
-        throw new NotImplementedException("You need to implement this function.");
+        return CalculateAge(MercuryPeriod);
     }
 
     public double OnVenus()
     {
-        throw new NotImplementedException("You need to implement this function.");
+        return CalculateAge(VenusPeriod);
     }
 
     public double OnMars()
     {
-        throw new NotImplementedException("You need to implement this function.");
+        return CalculateAge(MarsPeriod);
     }
 
     public double OnJupiter()
     {
-        throw new NotImplementedException("You need to implement this function.");
+        return CalculateAge(JupiterPeriod);
     }
 
     public double OnSaturn()
     {
-        throw new NotImplementedException("You need to implement this function.");
+        return CalculateAge(SaturnPeriod);
     }
 
     public double OnUranus()
     {
-        throw new NotImplementedException("You need to implement this function.");
+        return CalculateAge(UranusPeriod);
     }
 
     public double OnNeptune()
     {
-        throw new NotImplementedException("You need to implement this function.");
+        return CalculateAge(NeptunePeriod);
     }
 }
