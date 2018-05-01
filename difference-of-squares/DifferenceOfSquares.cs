@@ -1,34 +1,18 @@
 ﻿using System;
 using System.Linq;
-
-//Find the difference between the square of the sum and the sum of the squares of the first N natural numbers.
-
+using System.Collections.Generic;
 
 public static class DifferenceOfSquares
 {
-    public static int[] CreateSeries(int max)
-    {
-        int[] series = new int[max];
-        for (int i = 0; i < max; i++)
-        {
-            series[i] = i + 1;
-        }
-        return series;
-    }
     public static int CalculateSquareOfSum(int max)
     {
-        int[] series = CreateSeries(max);
-        return series.Sum() * series.Sum();
+        var sum = Enumerable.Range(1, max).Sum();
+        return sum * sum;
     }
 
     public static int CalculateSumOfSquares(int max)
     {
-        int[] series = CreateSeries(max);
-        for (int i = 0; i < max; i++)
-        {
-            series[i] = series[i] * series[i];
-        }
-        return series.Sum();
+        return Enumerable.Range(1, max).Select(i => i * i).Sum();
     }
 
     public static int CalculateDifferenceOfSquares(int max)
