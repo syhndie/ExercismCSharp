@@ -8,6 +8,11 @@ public static class Hamming
     {
         if (firstStrand.Length != secondStrand.Length) throw new ArgumentException();
 
-        return firstStrand.Zip(secondStrand, (c1, c2) => c1 != c2).Count(b => b);
+        int hamming = 0;
+        for (int i = 0; i < firstStrand.Length; i++)
+        {
+            if (firstStrand[i] != secondStrand[i]) hamming++;
+        }
+        return hamming;
     }
 }
