@@ -8,7 +8,7 @@ public static class Pangram
         var alphabet = "abcdefghijklmnopqrstuvwxyz";
         for (int i = 0; i < alphabet.Length; i++)
         {
-            if (!input.ToLower().ToCharArray().Contains(alphabet[i])) return false;
+            if (!input.ToLower().Contains(alphabet[i])) return false;
         }
         return true;
     }
