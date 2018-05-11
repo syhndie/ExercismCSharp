@@ -2,17 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-enum Bonus
-{
-    Double = 2,
-    Triple = 3
-}
-
 public static class ScrabbleScore
 {
-    public static int Score(string input)
-    {
-        Dictionary<char, int> letterValues = new Dictionary<char, int>
+    public static Dictionary<char, int> letterValues = new Dictionary<char, int>
         {
             ['a'] = 1,
             ['b'] = 3,
@@ -41,6 +33,28 @@ public static class ScrabbleScore
             ['y'] = 4,
             ['z'] = 10
         };
+
+    public enum Bonus
+    {
+        None = 1,
+        Double = 2,
+        Triple = 3
+    }
+
+    public static int Score(string input)
+    {
+        return BaseScore(input);
+    }
+
+    public static int Score(string input, Bonus wordBonus, char[] doubleLetters, char[] tripleLetters)
+    {
+        var doubleLetterBonus = doubleLetters.Sum(c => letterValues[c]);
+        var tripleLetterBonus = 2 * (tripleLetters.Sum(c => letterValues[c]));
+        return (int)wordBonus * (BaseScore(input) + doubleLetterBonus + tripleLetterBonus);
+    }
+
+    public static int BaseScore(string input)
+    {
         return input.ToLower().ToCharArray().Sum(c => letterValues[c]);
-    }    
+    }
 }

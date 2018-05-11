@@ -5,6 +5,24 @@ using Xunit;
 public class ScrabbleScoreTest
 {
     [Fact]
+    public void Double_letter_and_double_word()
+    {
+        Assert.Equal(34, ScrabbleScore.Score("cabbage", ScrabbleScore.Bonus.Double, new char[] { 'b' }, new char[] {}));
+    }
+
+    [Fact]
+    public void Triple_word()
+    {
+        Assert.Equal(54, ScrabbleScore.Score("chicken", ScrabbleScore.Bonus.Triple, new char[] { }, new char[] { }));
+    }
+
+    [Fact]
+    public void Triple_letters()
+    {
+        Assert.Equal(15, ScrabbleScore.Score("mouse", ScrabbleScore.Bonus.None, new char[] { }, new char[] { 'm', 'e' }));
+    }
+
+    [Fact]
     public void Lowercase_letter()
     {
         Assert.Equal(1, ScrabbleScore.Score("a"));
