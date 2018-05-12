@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Linq;
 
-//For want of a battle the kingdom was lost.
-//And all for the want of a nail.
-
 public static class Proverb
 {
     public static string[] Recite(string[] subjects)
