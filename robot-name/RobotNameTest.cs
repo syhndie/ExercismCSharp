@@ -1,4 +1,5 @@
 using Xunit;
+using System;
 
 public class RobotNameTest
 {
