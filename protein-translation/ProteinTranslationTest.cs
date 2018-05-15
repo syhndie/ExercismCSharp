@@ -82,4 +82,10 @@ public class ProteinTranslationTest
     {
         Assert.Throws<Exception>(() => ProteinTranslation.Translate("CARROT"));
     }
+
+    [Fact]
+    public void Discards_leftover_nucleotides()
+    {
+        Assert.Equal(new[] { "Tryptophan", "Cysteine", "Tyrosine" }, ProteinTranslation.Translate("UGGUGUUAUU"));
+    }
 }

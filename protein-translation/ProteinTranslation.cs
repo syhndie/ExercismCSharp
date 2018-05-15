@@ -16,7 +16,7 @@ public enum Proteins
 
 public static class ProteinTranslation
 {
-    private static readonly Dictionary<string, Proteins> codonProteinLookup = new Dictionary<string, Proteins>
+    private static readonly Dictionary<string, Proteins> mapCodonProtein = new Dictionary<string, Proteins>
     {
         ["AUG"] = Proteins.Methionine,
         ["UUU"] = Proteins.Phenylalanine,
@@ -39,24 +39,20 @@ public static class ProteinTranslation
  
     public static string[] Translate(string codon)
     {
-        string[] codons = new string[] { };
-        for (int i = 0; i < codon.Length; i+=3)
+        return Enumerable.Range(0, codon.Length / 3)
+            .Select(i => codon.Substring(i * 3, 3))
+            .Select(s => GetProteinName(s))
+            .TakeWhile(s => s != $"{Proteins.STOP}")
+            .ToArray();
+    }
+
+    private static string GetProteinName(string codon)
+    {
+        if (mapCodonProtein.TryGetValue(codon, out Proteins protein))
         {
-            codons = codons.Append(codon.Substring(i, 3)).ToArray();
+            return protein.ToString();
         }
 
-        string[] proteins = new string[] { };        
-        foreach (string snippet in codons)
-        {
-            if (codonProteinLookup.Keys.Contains(snippet))
-            {
-                var newProtein = codonProteinLookup[snippet];
-                if (newProtein == Proteins.STOP) return proteins;
-                proteins = proteins.Append(newProtein.ToString()).ToArray();
-            }
-            else throw new Exception("Invalid codon present");
-        }
-
-        return proteins;
+        throw new Exception("Invalid codon");
     }
 }
