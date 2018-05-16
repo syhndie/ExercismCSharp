@@ -4,7 +4,7 @@ public static class ErrorHandling
 {
     public static void HandleErrorByThrowingException()
     {
-        throw new Exception("This is a generic system exception.");
+        throw new Exception();
     }
 
     public static int? HandleErrorByReturningNullableType(string input)
@@ -20,7 +20,9 @@ public static class ErrorHandling
 
     public static void DisposableResourcesAreDisposedWhenExceptionIsThrown(IDisposable disposableObject)
     {
-        disposableObject.Dispose();
-        throw new Exception("This is a generic system exception.");
+        using (disposableObject)
+        {
+            throw new Exception();
+        }
     }
 }
