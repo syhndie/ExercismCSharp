@@ -4,21 +4,23 @@ public static class ErrorHandling
 {
     public static void HandleErrorByThrowingException()
     {
-        throw new NotImplementedException("You need to implement this function.");
+        throw new Exception("This is a generic system exception.");
     }
 
     public static int? HandleErrorByReturningNullableType(string input)
     {
-        throw new NotImplementedException("You need to implement this function.");
+        if (int.TryParse(input, out int output)) return output;
+        return null;
     }
 
     public static bool HandleErrorWithOutParam(string input, out int result)
     {
-        throw new NotImplementedException("You need to implement this function.");
+        return int.TryParse(input, out result);
     }
 
     public static void DisposableResourcesAreDisposedWhenExceptionIsThrown(IDisposable disposableObject)
     {
-        throw new NotImplementedException("You need to implement this function.");
+        disposableObject.Dispose();
+        throw new Exception("This is a generic system exception.");
     }
 }
