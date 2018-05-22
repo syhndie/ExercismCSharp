@@ -4,9 +4,6 @@ using System.Linq;
 
 public static class BeerSong
 {
-    private const string Base = "x bottles of beer on the wall, x bottles of beer.\n" +
-                                "Take one down and pass it around, y bottles of beer on the wall.\n" +
-                                "";
     public static string Verse(int number)
     {
         string startNumber = number.ToString();
