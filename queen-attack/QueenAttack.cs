@@ -20,7 +20,7 @@ public static class QueenAttack
         if (white.Row == black.Row) return true;
         if (white.Column == black.Column) return true;
         if (Math.Abs(white.Column - black.Column) == Math.Abs(white.Row - black.Row)) return true;
-        else return false;
+        return false;
     }
 
     public static Queen Create(int row, int column)
