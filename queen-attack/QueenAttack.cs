@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 
 public class Queen
 {
@@ -15,6 +16,8 @@ public class Queen
 
 public static class QueenAttack
 {
+    public static IEnumerable<int> allowable = Enumerable.Range(0, 8);
+
     public static bool CanAttack(Queen white, Queen black)
     {
         if (white.Row == black.Row) return true;
@@ -25,8 +28,6 @@ public static class QueenAttack
 
     public static Queen Create(int row, int column)
     {
-        var allowable =Enumerable.Range(0, 8);
-
         if (allowable.Contains(row) && allowable.Contains(column)) return new Queen(row, column);
         else throw new ArgumentOutOfRangeException();
     }

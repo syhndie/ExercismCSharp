@@ -12,11 +12,14 @@ public static class Sieve
 
         var range = Enumerable.Range(2, limit - 1);
 
-        foreach (int number in range)
+        for (int i = 2; i < limit; i++)
         {
-           for (int i = 2; number * i <= limit; i++)
+            if (multiples.Contains(i)) continue;
+
+            for (int j = 2; i * j <= limit; j++)
             {
-                multiples.Add(number * i);                
+                if (multiples.Contains(i * j)) continue;
+                multiples.Add(i * j);
             }
         }
 
