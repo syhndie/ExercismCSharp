@@ -129,6 +129,9 @@ public class RobotSimulator
                 case 'A':
                     Advance();
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException("Invalid command given");
             }
         }
     }
