@@ -7,9 +7,10 @@ public static class Acronym
 {
     public static string Abbreviate(string phrase)
     {
-        return String.Join("", Regex.Replace(phrase.ToUpper(), @"[^A-Z]+", ",")
+        var acronymArray = Regex.Replace(phrase.ToUpper(), @"[^A-Z]+", ",")
             .Split(',')
             .Select(s => s.Substring(0, 1))
-            .ToArray());
+            .ToArray();
+        return String.Join("", acronymArray); 
     }
 }
