@@ -22,6 +22,7 @@ public static class LargestSeriesProduct
 
             if (newProduct > maxProduct) maxProduct = newProduct;
         }
-        return maxProduct; ;
+
+        return maxProduct;
     }
 }
