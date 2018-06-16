@@ -4,7 +4,7 @@ using System.Linq;
 
 public static class House
 {
-    private static readonly Dictionary<int, Line> _lines = new Dictionary<int, Line>
+    private static readonly Dictionary<int, Line> IntToLine = new Dictionary<int, Line>
     {
         {1, new Line("the house ", "", "that Jack built.") },
         {2, new Line("the malt ", "", "that lay in ") },
@@ -22,27 +22,23 @@ public static class House
 
     public static string Recite(int verseNumber)
     {
-        string verse = "This is ";
+        string intro = "This is ";
 
-        for (int i = verseNumber; i > 0; i--)
-        {
-            Line line = _lines[i];
-            verse = $"{verse}{GetLineAsString(line)}";
-        }
+        var lines = Enumerable.Range(1, verseNumber)
+            .Reverse()
+            .Select(i => IntToLine[i])
+            .Select(l => GetLineAsString(l))
+            .Aggregate((s1, s2) => s1 + s2);
 
-        return verse;
+        return $"{intro}{lines}";
     }
 
     public static string Recite(int startVerse, int endVerse)
     {
-        string verses = "";
-
-        for (int i = startVerse; i <= endVerse; i++)
-        {
-            verses = $"{verses}{Recite(i)}\n";
-        }
-
-        return verses.TrimEnd('\n');
+        return Enumerable.Range(startVerse, endVerse - startVerse + 1)
+            .Select(i => Recite(i))
+            .Aggregate((v1, v2) => v1 + '\n' + v2)
+            .TrimEnd('\n');
     }
 
     private static string GetLineAsString(Line line)
