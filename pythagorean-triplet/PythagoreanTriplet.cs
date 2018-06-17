@@ -55,9 +55,9 @@ public class Triplet
 
     public static IEnumerable<Triplet> Where(int maxFactor, int minFactor = 1, int sum = 0)
     {      
-        for (int a = minFactor; a <= maxFactor; a++)
+        for (int a = minFactor; a <= maxFactor - 2; a++)
         {
-            for (int b = a + 1; b <= maxFactor; b++)
+            for (int b = a + 1; b <= maxFactor - 1; b++)
             {
                 for (int c = b + 1; c <= maxFactor; c++)
                 {
