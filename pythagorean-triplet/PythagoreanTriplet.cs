@@ -54,9 +54,7 @@ public class Triplet
     }
 
     public static IEnumerable<Triplet> Where(int maxFactor, int minFactor = 1, int sum = 0)
-    {
-        List<Triplet> triplets = new List<Triplet>();
-
+    {      
         for (int a = minFactor; a <= maxFactor; a++)
         {
             for (int b = a + 1; b <= maxFactor; b++)
@@ -69,11 +67,9 @@ public class Triplet
 
                     if (sum != 0 && newTriplet.Sum() != sum) continue;
 
-                    triplets.Add(newTriplet);
+                    yield return newTriplet;
                 }
             }
         }
-
-        return triplets;
     } 
 }
