@@ -1,67 +1,43 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class Triplet
 {
-    private readonly int _a;
-    private readonly int _b;
-    private readonly int _c;
-
-    private int A
+    public int a;
+    public int b;
+    public int c;
+    
+    public Triplet(int _a, int _b, int _c)
     {
-        get
-        {
-            return _a;
-        }
-    }
-
-    private int B
-    {
-        get
-        {
-            return _b;
-        }
-    }
-
-    private int C
-    {
-        get
-        {
-            return _c;
-        }
-    }
-    public Triplet(int a, int b, int c)
-    {
-        _a = a;
-        _b = b;
-        _c = c;
+        a = _a;
+        b = _b;
+        c = _c;
     }
 
     public int Sum()
     {
-        return A + B + C;
+        return a + b + c;
     }
 
     public int Product()
     {
-        return A * B * C;
+        return a * b * c;
     }
 
     public bool IsPythagorean()
     { 
-        return (Math.Pow(A, 2) + Math.Pow(B, 2) == Math.Pow(C, 2));
+        return ((a * a)  + (b * b) == (c * c));
     }
 
     public static IEnumerable<Triplet> Where(int maxFactor, int minFactor = 1, int sum = 0)
     {      
-        for (int a = minFactor; a <= maxFactor - 2; a++)
+        for (int _a = minFactor; _a < maxFactor - 1; _a++)
         {
-            for (int b = a + 1; b <= maxFactor - 1; b++)
+            for (int _b = _a + 1; _b < maxFactor; _b++)
             {
-                for (int c = b + 1; c <= maxFactor; c++)
+                for (int _c = _b + 1; _c <= maxFactor; _c++)
                 {
-                    Triplet newTriplet = new Triplet(a, b, c);
+                    Triplet newTriplet = new Triplet(_a, _b, _c);
 
                     if (!newTriplet.IsPythagorean()) continue;
 
