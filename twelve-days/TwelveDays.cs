@@ -46,8 +46,8 @@ public static class TwelveDays
                 .Reverse());
 
         string gifts = verseNumber == 1
-            ? giftForEachDay[(DaysOfChristmas)1]
-            : $"{pluralGifts}, and {giftForEachDay[(DaysOfChristmas)1]}";
+            ? giftForEachDay[DaysOfChristmas.first]
+            : $"{pluralGifts}, and {giftForEachDay[DaysOfChristmas.first]}";
 
         return $"On the {ordinal} day of Christmas my true love gave to me, {gifts}.";
     }
