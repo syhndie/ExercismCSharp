@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 public class Anagram
 {
@@ -14,15 +15,29 @@ public class Anagram
 
     public string[] Anagrams(string[] potentialMatches)
     {
-        string[] orderedPotentials = potentialMatches
-            .Select(s => AlphabetizeString(s))
-            .ToArray();
-        
-        return Enumerable.Range(0, potentialMatches.Count())
-            .Where(i => potentialMatches[i].ToLower() != lowercaseBaseWord)
-            .Where(i => orderedPotentials[i] == orderedBaseWord)
-            .Select(i => potentialMatches[i])
-            .ToArray();
+        List<string> anagrams = new List<string>(); 
+   
+        for (int i = 0; i < potentialMatches.Count(); i++)
+        {
+            string orderedPotential = AlphabetizeString(potentialMatches[i]);
+
+            if (potentialMatches[i].ToLower() == lowercaseBaseWord) continue;
+            if (orderedPotential == orderedBaseWord) anagrams.Add(potentialMatches[i]);
+        }
+
+        return anagrams.ToArray();
+
+        //string[] orderedPotentials = potentialMatches
+        //    .Select(s => AlphabetizeString(s))
+        //    .ToArray();
+
+        //return Enumerable.Range(0, potentialMatches.Count())
+        //    .Where(i => potentialMatches[i].ToLower() != lowercaseBaseWord)
+        //    .Where(i => orderedPotentials[i] == orderedBaseWord)
+        //    .Select(i => potentialMatches[i])
+        //    .ToArray();
+
+
     }
 
     private string AlphabetizeString (string word)

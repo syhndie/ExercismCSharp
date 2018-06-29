@@ -31,19 +31,24 @@ public static class TwelveDays
 
     public static string Recite(int startVerse, int endVerse)
     {
-        return String.Join("\n", Enumerable
+        IEnumerable<string> versesEnumerable = Enumerable
             .Range(startVerse, endVerse - (startVerse - 1))
-            .Select(i => GetOneVerse(i)));
+            .Select(i => GetOneVerse(i));
+
+        return String.Join("\n", versesEnumerable);
     }
 
     private static string GetOneVerse(int verseNumber)
     {
         DaysOfChristmas ordinal = (DaysOfChristmas)verseNumber;
 
-        string pluralGifts = String.Join(", ", giftForEachDay
-                .Where(p => (int)p.Key <= verseNumber && (int)p.Key > 1)
-                .Select(p => p.Value)
-                .Reverse());
+        IEnumerable<string> giftsEnumerable = giftForEachDay
+            .Where(p => (int)p.Key <= verseNumber)
+            .Where(p => (int)p.Key > 1)
+            .Select(p => p.Value)
+            .Reverse();
+
+        string pluralGifts = String.Join(", ", giftsEnumerable);
 
         string gifts = verseNumber == 1
             ? giftForEachDay[DaysOfChristmas.first]
