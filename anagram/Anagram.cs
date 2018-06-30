@@ -15,27 +15,27 @@ public class Anagram
 
     public string[] Anagrams(string[] potentialMatches)
     {
-        List<string> anagrams = new List<string>(); 
-   
-        for (int i = 0; i < potentialMatches.Count(); i++)
-        {
-            string orderedPotential = AlphabetizeString(potentialMatches[i]);
+        //List<string> anagrams = new List<string>(); 
 
-            if (potentialMatches[i].ToLower() == lowercaseBaseWord) continue;
-            if (orderedPotential == orderedBaseWord) anagrams.Add(potentialMatches[i]);
-        }
+        //for (int i = 0; i < potentialMatches.Count(); i++)
+        //{
+        //    string orderedPotential = AlphabetizeString(potentialMatches[i]);
 
-        return anagrams.ToArray();
+        //    if (potentialMatches[i].ToLower() == lowercaseBaseWord) continue;
+        //    if (orderedPotential == orderedBaseWord) anagrams.Add(potentialMatches[i]);
+        //}
 
-        //string[] orderedPotentials = potentialMatches
-        //    .Select(s => AlphabetizeString(s))
-        //    .ToArray();
+        //return anagrams.ToArray();
 
-        //return Enumerable.Range(0, potentialMatches.Count())
-        //    .Where(i => potentialMatches[i].ToLower() != lowercaseBaseWord)
-        //    .Where(i => orderedPotentials[i] == orderedBaseWord)
-        //    .Select(i => potentialMatches[i])
-        //    .ToArray();
+        string[] orderedPotentials = potentialMatches
+            .Select(s => AlphabetizeString(s))
+            .ToArray();
+
+        return Enumerable.Range(0, potentialMatches.Count())
+            .Where(i => potentialMatches[i].ToLower() != lowercaseBaseWord)
+            .Where(i => orderedPotentials[i] == orderedBaseWord)
+            .Select(i => potentialMatches[i])
+            .ToArray();
 
 
     }
