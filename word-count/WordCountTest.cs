@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class WordCountTest
 {
     [Fact]
-    public void Count_one_word()
+    public void A_Count_one_word()
     {
         var actual = WordCount.CountWords("word");
         var expected = new Dictionary<string, int>
@@ -16,8 +16,8 @@ public class WordCountTest
         Assert.Equal(expected, actual);
     }
 
-    [Fact(Skip = "Remove to run test")]
-    public void Count_one_of_each_word()
+    [Fact]
+    public void B_Count_one_of_each_word()
     {
         var actual = WordCount.CountWords("one of each");
         var expected = new Dictionary<string, int>
@@ -29,8 +29,8 @@ public class WordCountTest
         Assert.Equal(expected, actual);
     }
 
-    [Fact(Skip = "Remove to run test")]
-    public void Multiple_occurrences_of_a_word()
+    [Fact]
+    public void C_Multiple_occurrences_of_a_word()
     {
         var actual = WordCount.CountWords("one fish two fish red fish blue fish");
         var expected = new Dictionary<string, int>
@@ -44,8 +44,8 @@ public class WordCountTest
         Assert.Equal(expected, actual);
     }
 
-    [Fact(Skip = "Remove to run test")]
-    public void Handles_cramped_lists()
+    [Fact]
+    public void D_Handles_cramped_lists()
     {
         var actual = WordCount.CountWords("one,two,three");
         var expected = new Dictionary<string, int>
@@ -57,8 +57,8 @@ public class WordCountTest
         Assert.Equal(expected, actual);
     }
 
-    [Fact(Skip = "Remove to run test")]
-    public void Handles_expanded_lists()
+    [Fact]
+    public void E_Handles_expanded_lists()
     {
         var actual = WordCount.CountWords("one,\ntwo,\nthree");
         var expected = new Dictionary<string, int>
@@ -70,8 +70,8 @@ public class WordCountTest
         Assert.Equal(expected, actual);
     }
 
-    [Fact(Skip = "Remove to run test")]
-    public void Ignore_punctuation()
+    [Fact]
+    public void F_Ignore_punctuation()
     {
         var actual = WordCount.CountWords("car: carpet as java: javascript!!&@$%^&");
         var expected = new Dictionary<string, int>
@@ -85,8 +85,8 @@ public class WordCountTest
         Assert.Equal(expected, actual);
     }
 
-    [Fact(Skip = "Remove to run test")]
-    public void Include_numbers()
+    [Fact]
+    public void G_Include_numbers()
     {
         var actual = WordCount.CountWords("testing, 1, 2 testing");
         var expected = new Dictionary<string, int>
@@ -98,8 +98,8 @@ public class WordCountTest
         Assert.Equal(expected, actual);
     }
 
-    [Fact(Skip = "Remove to run test")]
-    public void Normalize_case()
+    [Fact]
+    public void H_Normalize_case()
     {
         var actual = WordCount.CountWords("go Go GO Stop stop");
         var expected = new Dictionary<string, int>
@@ -110,8 +110,8 @@ public class WordCountTest
         Assert.Equal(expected, actual);
     }
 
-    [Fact(Skip = "Remove to run test")]
-    public void With_apostrophes()
+    [Fact]
+    public void I_With_apostrophes()
     {
         var actual = WordCount.CountWords("First: don't laugh. Then: don't cry.");
         var expected = new Dictionary<string, int>
@@ -125,8 +125,8 @@ public class WordCountTest
         Assert.Equal(expected, actual);
     }
 
-    [Fact(Skip = "Remove to run test")]
-    public void With_quotations()
+    [Fact]
+    public void J_With_quotations()
     {
         var actual = WordCount.CountWords("Joe can't tell between 'large' and large.");
         var expected = new Dictionary<string, int>
@@ -141,14 +141,28 @@ public class WordCountTest
         Assert.Equal(expected, actual);
     }
 
-    [Fact(Skip = "Remove to run test")]
-    public void Multiple_spaces_not_detected_as_a_word()
+    [Fact]
+    public void K_Multiple_spaces_not_detected_as_a_word()
     {
         var actual = WordCount.CountWords(" multiple   whitespaces");
         var expected = new Dictionary<string, int>
         {
             ["multiple"] = 1,
             ["whitespaces"] = 1
+        };
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void L_Includes_hypens()
+    {
+        var actual = WordCount.CountWords("my mother-in-law is visting");
+        var expected = new Dictionary<string, int>
+        {
+            ["my"] = 1,
+            ["mother-in-law"] = 1,
+            ["is"] = 1,
+            ["visting"] = 1
         };
         Assert.Equal(expected, actual);
     }
