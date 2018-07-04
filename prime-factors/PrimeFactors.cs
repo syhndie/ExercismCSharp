@@ -5,15 +5,13 @@ public static class PrimeFactors
 {
     public static IEnumerable<int> Factors(long number)
     {
-        for(int i = 2; number > 1;)
+        for(int i = 2; number > 1; i++)
         {
             while (number % i == 0)
             {
                 yield return i;
                 number /= i;
             }
-
-            i++;
         }
     }
 }
