@@ -5,7 +5,7 @@ using System.Linq;
 public static class PascalsTriangle
 {
     public static IEnumerable<IEnumerable<int>> Calculate(int rows)
-    {   
+    {
         //negative rows
         if (rows < 0) throw new ArgumentOutOfRangeException("Invalid value for rows parameter. Number of rows cannot be negative.");
 
@@ -38,8 +38,7 @@ public static class PascalsTriangle
 
             allRows.Add(newRow);
         }
-        
+
         return allRows;
     }
-
 }
