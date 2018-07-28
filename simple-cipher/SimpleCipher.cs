@@ -1,23 +1,49 @@
 using System;
+using System.Security.Cryptography;
+using System.Text;
+using System.Linq;
 
 public class SimpleCipher
 {
+    string _key;
+
     public SimpleCipher()
     {
-        throw new NotImplementedException("You need to implement this function.");
+        _key = GetRandomKey();
     }
 
     public SimpleCipher(string key)
     {
-        throw new NotImplementedException("You need to implement this function.");
+        _key = key;
     }
     
     public string Key 
     {
         get
         {
-            throw new NotImplementedException("You need to implement this function.");
+            return _key;
         }
+    }
+
+    private string GetRandomKey()
+    {
+        char[] potentialChars = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
+
+        byte[] randomBytes = new byte[100];
+
+        using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
+        {
+            crypto.GetNonZeroBytes(randomBytes);
+        }
+
+        StringBuilder randomString = new StringBuilder(100);
+
+        foreach (byte b in randomBytes)
+        {
+            randomString.Append(potentialChars[b % potentialChars.Length]);
+        }
+
+        return randomString.ToString();
     }
 
     public string Encode(string plaintext)
