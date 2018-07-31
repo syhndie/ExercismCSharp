@@ -6,11 +6,18 @@ using System.Text.RegularExpressions;
 
 public class SimpleCipher
 {
+    private enum TranlateDirection
+    {
+        Encode,
+        Decode
+    };
+
+    const int alphabetLength = 26;
     string _key;
 
     public SimpleCipher()
     {
-        _key = GetRandomKey();
+        _key = GetRandomKey(100);
     }
 
     public SimpleCipher(string key)
@@ -39,42 +46,26 @@ public class SimpleCipher
 
     public string Encode(string plaintext)
     {
-        int[] expandedNumericKey = SetLengthOfNumericKey(plaintext, NumericKey);
-
-        int[] numericMessage = GetIntsFromString(plaintext);
-
-        int[] numericEncoded = Enumerable.Range(0, plaintext.Length)
-            .Select(i => numericMessage[i] + expandedNumericKey[i])
-            .ToArray();
-
-        return GetStringFromInts(numericEncoded);
+        return Translate(plaintext, TranlateDirection.Encode);
     }
 
     public string Decode(string ciphertext)
     {
-        int[] expandedNumericKey = SetLengthOfNumericKey(ciphertext, NumericKey);
-
-        int[] numericEncoded = GetIntsFromString(ciphertext);
-
-        int[] numericMessage = Enumerable.Range(0, ciphertext.Length)
-            .Select(i => numericEncoded[i] - expandedNumericKey[i])
-            .ToArray();
-
-        return GetStringFromInts(numericMessage);
+        return Translate(ciphertext, TranlateDirection.Decode);
     }
 
-    private string GetRandomKey()
+    private string GetRandomKey(int keyLength)
     {
         char[] potentialChars = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
 
-        byte[] randomBytes = new byte[100];
+        byte[] randomBytes = new byte[keyLength];
 
         using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
         {
             crypto.GetNonZeroBytes(randomBytes);
         }
 
-        StringBuilder randomString = new StringBuilder(100);
+        StringBuilder randomString = new StringBuilder(keyLength);
 
         foreach (byte b in randomBytes)
         {
@@ -92,6 +83,17 @@ public class SimpleCipher
     private int[] GetIntsFromString(string letters)
     {
         return GetIntsFromString(letters, (int)'a');
+    }
+
+    private string Translate(string inputString, TranlateDirection translateDirection)
+    {
+        int[] explandedNumericKey = SetLengthOfNumericKey(inputString, NumericKey);
+
+        int[] inputNumeric = GetIntsFromString(inputString);
+
+        int[] translatedNumeric = ApplyKey(inputNumeric, explandedNumericKey, translateDirection);
+
+        return GetStringFromInts(translatedNumeric);
     }
 
     private int[] SetLengthOfNumericKey(string text, int[] numericKey)
@@ -113,11 +115,23 @@ public class SimpleCipher
     private string GetStringFromInts(int[] numbers)
     {
         var characters = numbers
-            .Select(i => i < 123 ? i : i - 26)
-            .Select(i => i > 96 ? i : i + 26)
+            .Select(i => i <= (int)'z' ? i : i - alphabetLength)
+            .Select(i => i >= (int)'a' ? i : i + alphabetLength)
             .Select(i => (char)i);
 
         return String.Concat(characters);
+    }
+
+    private int[] ApplyKey(int[] message, int[] key, TranlateDirection translateDirection)
+    {
+        int multiplier = 
+            translateDirection == TranlateDirection.Encode
+            ? 1 
+            : -1;
+
+        return Enumerable.Range(0, message.Length)
+            .Select(i => message[i] + (multiplier * key[i]))
+            .ToArray();
     }
 
 } 
