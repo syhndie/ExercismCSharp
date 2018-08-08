@@ -39,7 +39,8 @@ public static class RomanNumeralExtension
             { 6, "VI" },
             { 7, "VII" },
             { 8, "VIII" },
-            { 9, "IX" }
+            { 9, "IX" },
+            { 0, "" } 
         };
 
         if (value > 3000) throw new ArgumentException("Integer cannot be greater than 3,000.");
@@ -55,7 +56,7 @@ public static class RomanNumeralExtension
         var digitValues = Enumerable.Range(0, digits.Count())
             .Select(i => digits[i] *= (int)Math.Pow(10, i))
             .Reverse()
-            .Select(i => romanLookUp.GetValueOrDefault(i));
+            .Select(i => romanLookUp[i]);
 
         return String.Concat(digitValues);
     }
