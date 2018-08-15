@@ -1,52 +1,53 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Linq;
 
 public static class Minesweeper
 {
     public static string[] Annotate(string[] input)
     {
-        char[][] mines = input.Select(s => s.ToCharArray()).ToArray();
-        char[][] counts = mines;
-        string[] result = new string[input.Length];
+        char[][] inputAsChars = input.Select(s => s.ToCharArray()).ToArray();
+        char[][] outputAsChars = inputAsChars;
+        string[] outputAsStrings = new string[input.Length];
 
-        for (int i = 0; i < input.Length; i++)
+        for (int row = 0; row < input.Length; row++)
         {
-            for (int j = 0; j < mines[i].Length; j++ )
+            for (int col = 0; col < inputAsChars[row].Length; col++ )
             {
-                if (mines[i][j] == '*') counts[i][j] = '*';
-                else counts[i][j] = GetCount(mines, i, j);
-
-                if (counts[i][j] == '0') counts[i][j] = ' ';
+                if (inputAsChars[row][col] == '*') continue;
+                else outputAsChars[row][col] = GetCountAsChar(inputAsChars, row, col);
             } 
 
-            result[i] = new string(counts[i]);
+            outputAsStrings[row] = new string(outputAsChars[row]);
         }
 
-        return result;
+        return outputAsStrings;
     }
-
-    private static char GetCount(char[][] mines, int i, int j)
+    
+    private static char GetCountAsChar(char[][] mines, int row, int col)
     {
-        List<char> neighbors = new List<char>();
+        int neighborMineCount = 0;
 
-        if (i - 1 >=0)
+        for (int horizShift = -1; horizShift <= 1; horizShift++)
         {
-            if (j - 1 >= 0) neighbors.Add(mines[i - 1][j - 1]);
-            neighbors.Add(mines[i - 1][j]);
-            if (j + 1 < mines[i].Length) neighbors.Add(mines[i - 1][j + 1]);
+            for (int vertShift = -1; vertShift <= 1; vertShift++)
+            {
+                bool notItself = horizShift != 0 || vertShift != 0;
+                bool notAboveGrid = row + horizShift >= 0;
+                bool notBelowGrid = row + horizShift < mines.Length;
+                bool notLeftOfGrid = col + vertShift >= 0;
+                bool notRightOfGrid = col + vertShift < mines[row].Length;
+
+                bool validNeighbor = notItself && notAboveGrid && notBelowGrid && notLeftOfGrid && notRightOfGrid;
+
+                if (validNeighbor && mines[row + horizShift][col + vertShift] == '*')
+                {
+                    neighborMineCount++;
+                }
+            }
         }
 
-        if (i + 1 < mines.Length)
-        {
-            if (j - 1 >= 0) neighbors.Add(mines[i + 1][j - 1]);
-            neighbors.Add(mines[i + 1][j]);
-            if (j + 1 < mines[i].Length) neighbors.Add(mines[i + 1][j + 1]);
-        }
+        char neighborMineCountAsChar = neighborMineCount.ToString().ToCharArray()[0];
+        if (neighborMineCountAsChar == '0') neighborMineCountAsChar = ' ';
 
-        if (j - 1 >= 0) neighbors.Add(mines[i][j - 1]);
-        if (j + 1 < mines[i].Length) neighbors.Add(mines[i][j + 1]);
-
-        return neighbors.Count(c => c == '*').ToString().ToCharArray()[0];
+        return neighborMineCountAsChar;
     }
 }
