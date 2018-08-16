@@ -26,22 +26,17 @@ public static class Minesweeper
     {
         int neighborMineCount = 0;
 
-        for (int horizShift = -1; horizShift <= 1; horizShift++)
+        for (int vertChange = -1; vertChange <= 1; vertChange++)
         {
-            for (int vertShift = -1; vertShift <= 1; vertShift++)
+            for (int hoirzChange = -1; hoirzChange <= 1; hoirzChange++)
             {
-                bool notItself = horizShift != 0 || vertShift != 0;
-                bool notAboveGrid = row + horizShift >= 0;
-                bool notBelowGrid = row + horizShift < mines.Length;
-                bool notLeftOfGrid = col + vertShift >= 0;
-                bool notRightOfGrid = col + vertShift < mines[row].Length;
+                if (vertChange == 0 && hoirzChange == 0) continue;
+                if (row + vertChange < 0) continue;
+                if (row + vertChange >= mines.Length) continue;
+                if (col + hoirzChange < 0) continue;
+                if (col + hoirzChange >= mines[row].Length) continue;
 
-                bool validNeighbor = notItself && notAboveGrid && notBelowGrid && notLeftOfGrid && notRightOfGrid;
-
-                if (validNeighbor && mines[row + horizShift][col + vertShift] == '*')
-                {
-                    neighborMineCount++;
-                }
+                if (mines[row + vertChange][col + hoirzChange] == '*') neighborMineCount++;                
             }
         }
 
