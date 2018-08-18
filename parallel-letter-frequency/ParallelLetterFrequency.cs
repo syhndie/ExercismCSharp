@@ -12,13 +12,12 @@ public static class ParallelLetterFrequency
 
         Parallel.ForEach(texts, s =>
         {
-            var letterCounts = s.ToLower()
-                .Where(char.IsLetter)
-                .GroupBy(c => c);
-
-            foreach (var g in letterCounts)
+            foreach (char c in s.ToLower())
             {
-                result.AddOrUpdate(g.Key, g.Count(), (k, v) => v + g.Count());
+                if (Char.IsLetter(c))
+                {
+                    result.AddOrUpdate(c, 1, (k, v) => v + 1);
+                }
             }
         });
 
