@@ -22,5 +22,12 @@ public static class ParallelLetterFrequency
         });
 
         return result.ToDictionary(p => p.Key, p => p.Value);
+
+        //non parallel solution 
+        //return String.Concat(texts)
+        //    .ToLower()
+        //    .Where(c => Char.IsLetter(c))
+        //    .GroupBy(c => c)
+        //    .ToDictionary(g => g.Key, g => g.Count());
     }
 }
