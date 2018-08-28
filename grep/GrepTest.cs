@@ -16,7 +16,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_one_match_print_line_numbers_flag()
     {
         var pattern = "Forbidden";
@@ -26,7 +26,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_one_match_case_insensitive_flag()
     {
         var pattern = "FORBIDDEN";
@@ -36,7 +36,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_one_match_print_file_names_flag()
     {
         var pattern = "Forbidden";
@@ -46,7 +46,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_one_match_match_entire_lines_flag()
     {
         var pattern = "With loss of Eden, till one greater Man";
@@ -56,7 +56,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_one_match_multiple_flags()
     {
         var pattern = "OF ATREUS, Agamemnon, KIng of MEN.";
@@ -66,7 +66,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_several_matches_no_flags()
     {
         var pattern = "may";
@@ -79,7 +79,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_several_matches_print_line_numbers_flag()
     {
         var pattern = "may";
@@ -92,7 +92,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_several_matches_match_entire_lines_flag()
     {
         var pattern = "may";
@@ -102,7 +102,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_several_matches_case_insensitive_flag()
     {
         var pattern = "ACHILLES";
@@ -114,7 +114,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_several_matches_inverted_flag()
     {
         var pattern = "Of";
@@ -129,17 +129,17 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void One_file_no_matches_various_flags()
     {
         var pattern = "Gandalf";
-        var flags = "-n -l -x -i";
+        var flags = "-n -l -x -i"; 
         var files = new[] { "iliad.txt" };
         var expected = "";
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void Multiple_files_one_match_no_flags()
     {
         var pattern = "Agamemnon";
@@ -149,7 +149,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void Multiple_files_several_matches_no_flags()
     {
         var pattern = "may";
@@ -162,7 +162,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void Multiple_files_several_matches_print_line_numbers_flag()
     {
         var pattern = "that";
@@ -176,7 +176,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void Multiple_files_one_match_print_file_names_flag()
     {
         var pattern = "who";
@@ -188,7 +188,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void Multiple_files_several_matches_case_insensitive_flag()
     {
         var pattern = "TO";
@@ -208,7 +208,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void Multiple_files_several_matches_inverted_flag()
     {
         var pattern = "a";
@@ -221,7 +221,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void Multiple_files_one_match_match_entire_lines_flag()
     {
         var pattern = "But I beseech your grace that I may know";
@@ -231,7 +231,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void Multiple_files_one_match_multiple_flags()
     {
         var pattern = "WITH LOSS OF EDEN, TILL ONE GREATER MAN";
@@ -241,7 +241,7 @@ public class GrepTest : IDisposable
         Assert.Equal(expected, Grep.Match(pattern, flags, files));
     }
 
-    [Fact(Skip = "Remove to run test")]
+    [Fact]
     public void Multiple_files_no_matches_various_flags()
     {
         var pattern = "Frodo";
