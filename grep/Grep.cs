@@ -5,22 +5,45 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
+[Flags]
+public enum Settings
+{
+    IncludeFileName = 1,
+    OnlyFileName = 2,
+    LineNumber = 4,
+    CaseInsensitive = 8,
+    EntireLine = 16,
+    NonMatches = 32
+
+}
 public static class Grep
 {
     public static string Match(string pattern, string flags, string[] files)
     {
-        Settings grepSettings = new Settings(files, flags);
+        Settings settings = GetSettings(flags, files);
 
-        List<Line> allLines = GetListOfAllLines(files, grepSettings);
+        List<Line> allLines = GetListOfAllLines(files, settings);
 
-        List<Line> matchingLines = GetLinesWithMatch(allLines, pattern, grepSettings);
+        List<Line> matchingLines = GetLinesWithMatch(allLines, pattern, settings);
 
-        List<string> matchingLinesAsStrings = GetStrings(matchingLines, grepSettings);
+        List<string> matchingLinesAsStrings = GetStrings(matchingLines, settings);
                 
         return String.Join("\n", matchingLinesAsStrings);
     }
-    
-    private static List<Line> GetListOfAllLines(string[] files, Settings grepSettings)
+ 
+    private static Settings GetSettings(string flags, string[] files)
+    {
+        Settings settings = new Settings();
+        if (files.Length > 1) settings = Settings.IncludeFileName;
+        if (flags.Contains("-l")) settings = settings | Settings.OnlyFileName;
+        if (flags.Contains("-n")) settings = settings | Settings.LineNumber;
+        if (flags.Contains("-i")) settings = settings | Settings.CaseInsensitive;
+        if (flags.Contains("-x")) settings = settings | Settings.EntireLine;
+        if (flags.Contains("-v")) settings = settings | Settings.NonMatches;
+        return settings;
+    }
+
+    private static List<Line> GetListOfAllLines(string[] files, Settings settings)
     {
         var filesWithText = files
             .Select(s => File.ReadAllLines(s))
@@ -32,31 +55,44 @@ public static class Grep
         {
             for (int i = 0; i < filesWithText[file].Length; i++)
             {
-                allLines.Add(new Line(filesWithText[file][i], files[file], i + 1, grepSettings));
+                allLines
+                    .Add(new Line(filesWithText[file][i], files[file], i + 1, settings));
             }
         }
 
         return allLines;
     }
 
-    private static List<Line> GetLinesWithMatch(List<Line> lines, string pattern, Settings grepSettings)
+    private static List<Line> GetLinesWithMatch(List<Line> lines, string pattern, Settings settings)
     {
-        pattern = grepSettings.MatchEntireLine ? $"^{pattern}$" : pattern;
+        pattern = 
+            settings.HasFlag(Settings.EntireLine) 
+            ? $"^{pattern}$" 
+            : pattern;
 
-        RegexOptions options = grepSettings.MatchCaseInsensitive ? RegexOptions.IgnoreCase : RegexOptions.None;
+        RegexOptions options = 
+            settings.HasFlag(Settings.CaseInsensitive) 
+            ? RegexOptions.IgnoreCase 
+            : RegexOptions.None;
 
-        Regex regex = new Regex(pattern, options);
+        Regex regex =  new Regex(pattern, options);
 
-        if (grepSettings.ShowOnlyNonMatches) return lines.Where(l => !regex.IsMatch(l.LineText)).ToList();
+        if (settings.HasFlag(Settings.NonMatches))
+        {
+            return lines.Where(l => !regex.IsMatch(l.LineText))
+                .ToList();
+        }
 
-        return lines.Where(l => regex.IsMatch(l.LineText)).ToList();
+
+        return lines.Where(l => regex.IsMatch(l.LineText))
+            .ToList();
     }
 
-    private static List<string> GetStrings(List<Line> matchingLines, Settings grepSettings)
+    private static List<string> GetStrings(List<Line> matchingLines, Settings settings)
     {
         if (matchingLines.Count() == 0) return new List<string>();
 
-        if (grepSettings.ShowOnlyFilename)
+        if (settings.HasFlag(Settings.OnlyFileName))
         {
             return matchingLines
                 .Select(l => l.FileName)
@@ -65,18 +101,28 @@ public static class Grep
                 .ToList();
         }
     
-        return matchingLines.Select(l => $"{l.PrintableFileName}{l.PrintableLineNumber}{l.LineText}").ToList();
+        return matchingLines
+            .Select(l => $"{l.PrintableFileName}{l.PrintableLineNumber}{l.LineText}")
+            .ToList();
     }
 }
 public class Line
 {
-    public Line(string lineText, string filename, int lineNumber, Settings grepSettings)
+    public Line(string lineText, string filename, int lineNumber, Settings settings)
     {
         LineText = lineText;
         FileName = filename;
         LineNumber = lineNumber;
-        PrintableFileName = grepSettings.IncludeFilename ? $"{FileName}:" : "";
-        PrintableLineNumber = grepSettings.IncludeLineNumber ? $"{LineNumber.ToString()}:" : "";
+
+        PrintableFileName = 
+            settings.HasFlag(Settings.IncludeFileName) 
+            ? $"{FileName}:" 
+            : "";
+
+        PrintableLineNumber = 
+            settings.HasFlag(Settings.LineNumber) 
+            ? $"{LineNumber.ToString()}:" 
+            : "";
     }
 
     public string LineText { get; set; }
@@ -84,30 +130,4 @@ public class Line
     public int LineNumber { get; set; }
     public string PrintableFileName { get; set; }
     public string PrintableLineNumber { get; set; }
-}
-
-public class Settings
-{
-    private const string fileNameFlag = "-l";
-    private const string lineNumberFlag = "-n";
-    private const string caseInsensitiveFlag = "-i";
-    private const string entireLineFlag = "-x";
-    private const string onlyNonMatchesFlag = "-v";
-
-    public Settings(string[] files, string flags)
-    {
-        IncludeFilename = files.Length > 1;
-        ShowOnlyFilename = flags.Contains(fileNameFlag);
-        IncludeLineNumber = flags.Contains(lineNumberFlag);
-        MatchCaseInsensitive = flags.Contains(caseInsensitiveFlag);
-        MatchEntireLine = flags.Contains(entireLineFlag);
-        ShowOnlyNonMatches = flags.Contains(onlyNonMatchesFlag);
-    }
-
-    public bool IncludeFilename { get; set; }
-    public bool ShowOnlyFilename { get; set; }
-    public bool IncludeLineNumber { get; set; }
-    public bool MatchCaseInsensitive { get; set; }
-    public bool MatchEntireLine { get; set; }
-    public bool ShowOnlyNonMatches { get; set; }
 }
