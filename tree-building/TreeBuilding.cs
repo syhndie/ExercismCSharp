@@ -22,8 +22,16 @@ public static class TreeBuilder
 {
     public static Tree BuildTree(IEnumerable<TreeBuildingRecord> records)
     {
+        if (records.Where(t => t.RecordId == 0).Any(tbr => tbr.ParentId != 0))
+        {
+            throw new ArgumentException("Parent ID of Root must be zero.");
+        }
 
-
+        if (records.Where(t => t.RecordId != 0).Any(tbr => tbr.ParentId >= tbr.RecordId))
+        {
+            throw new ArgumentException("Parent ID of all Branches must be less than Record ID");
+        }
+       
         var sortedRecords = records.OrderBy(tbr => tbr.RecordId);
 
         //make an empty list of trees
@@ -35,20 +43,11 @@ public static class TreeBuilder
         //for each tree building record
         foreach (var record in sortedRecords)
         {   
-            //create a new tree with and empty list of children
+            //create a new tree with empty list of children
             var t = new Tree { Children = new List<Tree>(), Id = record.RecordId, ParentId = record.ParentId };
 
             //add that tree to the list of trees
             trees.Add(t);
-
-            //throw an exception if root doesn't have 0 parentid, if non root doesn't have parentid less than itself
-            //throw an exception if non root doesn't have id one greater than prev record
-            if ((t.Id == 0 && t.ParentId != 0) ||
-                (t.Id != 0 && t.ParentId >= t.Id) ||
-                (t.Id != 0 && t.Id != previousRecordId + 1))
-            {
-                throw new ArgumentException();
-            }
 
             //increase prev record id
             ++previousRecordId;
