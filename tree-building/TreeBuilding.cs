@@ -22,23 +22,27 @@ public static class TreeBuilder
 {
     public static Tree BuildTree(IEnumerable<TreeBuildingRecord> records)
     {
-        var ordered = new SortedList<int, TreeBuildingRecord>();
 
-        foreach (var record in records)
-        {
-            ordered.Add(record.RecordId, record);
-        }
 
-        records = ordered.Values;
+        var sortedRecords = records.OrderBy(tbr => tbr.RecordId);
 
+        //make an empty list of trees
         var trees = new List<Tree>();
+
+        //create a variable for prev record id, set to -1
         var previousRecordId = -1;
 
-        foreach (var record in records)
+        //for each tree building record
+        foreach (var record in sortedRecords)
         {   
+            //create a new tree with and empty list of children
             var t = new Tree { Children = new List<Tree>(), Id = record.RecordId, ParentId = record.ParentId };
+
+            //add that tree to the list of trees
             trees.Add(t);
 
+            //throw an exception if root doesn't have 0 parentid, if non root doesn't have parentid less than itself
+            //throw an exception if non root doesn't have id one greater than prev record
             if ((t.Id == 0 && t.ParentId != 0) ||
                 (t.Id != 0 && t.ParentId >= t.Id) ||
                 (t.Id != 0 && t.Id != previousRecordId + 1))
@@ -46,14 +50,20 @@ public static class TreeBuilder
                 throw new ArgumentException();
             }
 
+            //increase prev record id
             ++previousRecordId;
         }
         
+        //throw an exception if list of trees is empty
         if (trees.Count == 0)
         {
             throw new ArgumentException();
         }
 
+        //start with first tree with id == 1
+        //get that tree's parent
+        //go to the parent's children list and add the tree
+        //increment through all remaining trees 
         for (int i = 1; i < trees.Count; i++)
         {
             var t = trees.First(x => x.Id == i);
@@ -61,6 +71,7 @@ public static class TreeBuilder
             parent.Children.Add(t);
         }
 
+        //return the first tree with id==0 - this the the root tree, and will have all the other trees inside its children lists
         var r = trees.First(t => t.Id == 0);
         return r;
     }
