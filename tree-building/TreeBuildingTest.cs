@@ -226,4 +226,19 @@ public class TreeBuildingTest
         Assert.Equal(id, tree.Id);
         Assert.True(tree.IsLeaf);
     }
+
+    [Fact]
+    public void Duplicate_Record_ID()
+    {
+        var records = new[]
+        {
+            new TreeBuildingRecord { RecordId = 0, ParentId = 0 },
+            new TreeBuildingRecord { RecordId = 1, ParentId = 0 },
+            new TreeBuildingRecord { RecordId = 2, ParentId = 0 },
+            new TreeBuildingRecord { RecordId = 2, ParentId = 1 }
+        };
+
+        Assert.Throws<ArgumentException>(() => TreeBuilder.BuildTree(records));
+    }
 }
+
