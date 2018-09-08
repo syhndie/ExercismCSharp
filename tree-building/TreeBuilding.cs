@@ -32,13 +32,11 @@ public static class TreeBuilder
         string invalidInputMessage = ValidateRecords(records);
         if (invalidInputMessage != null) throw new ArgumentException(invalidInputMessage);
        
-        var sortedRecords = records.OrderBy(tbr => tbr.RecordId);
-
         //make an empty list of trees
         var trees = new List<Tree>();
 
         //for each tree building record
-        foreach (var record in sortedRecords)
+        foreach (var record in records)
         {   
             //create a new tree with empty list of children
             var newTree = new Tree(record.RecordId, record.ParentId);
@@ -58,7 +56,7 @@ public static class TreeBuilder
             parentTree.Children.Add(childTree);
         }
 
-        //return the first tree with id==0 - this the the root tree, and will have all the other trees inside its children lists
+        //return the tree with id==0 - this the the root tree, and will have all the other trees inside its children lists
        return trees.Single(t => t.Id == 0);
     }
 
