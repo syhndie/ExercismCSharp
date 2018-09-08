@@ -48,15 +48,15 @@ public static class TreeBuilder
     {
         if (records.Count() < 1) return "Record set must include at least one record";
 
-        if (!records.Any(t => t.RecordId == 0)) return "Record set must include a Root (Record ID == 0";
+        if (!records.Any(tbr => tbr.RecordId == 0)) return "Record set must include a Root (Record ID == 0";
 
-        if (records.Where(t => t.RecordId == 0).Any(tbr => tbr.ParentId != 0)) return "Parent ID of Root must be zero.";
+        if (records.Where(tbr => tbr.RecordId == 0).Any(tbr => tbr.ParentId != 0)) return "Parent ID of Root must be zero.";
         
-        if (records.Where(t => t.RecordId != 0).Any(tbr => tbr.ParentId >= tbr.RecordId)) return "Parent ID of all Branches must be less than Record ID";
+        if (records.Where(tbr => tbr.RecordId != 0).Any(tbr => tbr.ParentId >= tbr.RecordId)) return "Parent ID of all Branches must be less than Record ID";
         
-        if (records.Select(t => t.RecordId).Distinct().Count() != records.Count()) return "All Record IDs must be unique";
+        if (records.Select(tbr => tbr.RecordId).Distinct().Count() != records.Count()) return "All Record IDs must be unique";
 
-        int maxRecordID = records.Select(t => t.RecordId).OrderBy(i => i).Last();
+        int maxRecordID = records.Select(tbr => tbr.RecordId).OrderBy(i => i).Last();
         if (maxRecordID != records.Count() - 1) return "All Record IDs must be continuous.";
         
         return null;
