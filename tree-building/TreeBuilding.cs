@@ -31,19 +31,8 @@ public static class TreeBuilder
     {
         string invalidInputMessage = ValidateRecords(records);
         if (invalidInputMessage != null) throw new ArgumentException(invalidInputMessage);
-       
-        //make an empty list of trees
-        var trees = new List<Tree>();
 
-        //for each tree building record
-        foreach (var record in records)
-        {   
-            //create a new tree with empty list of children
-            var newTree = new Tree(record.RecordId, record.ParentId);
-
-            //add that tree to the list of trees
-            trees.Add(newTree);
-        }
+        var trees = records.Select(tbr => new Tree(tbr.RecordId, tbr.ParentId)).ToList();
 
         //start with first tree with id == 1
         //get that tree's parent
