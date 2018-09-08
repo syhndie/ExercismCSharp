@@ -31,28 +31,20 @@ public static class TreeBuilder
     {
         string invalidInputMessage = ValidateRecords(records);
         if (invalidInputMessage != null) throw new ArgumentException(invalidInputMessage);
-
-        var test = records.Select(t => new Tree(t.RecordId, t.ParentId));
        
         var sortedRecords = records.OrderBy(tbr => tbr.RecordId);
 
         //make an empty list of trees
         var trees = new List<Tree>();
 
-        //create a variable for prev record id, set to -1
-        var previousRecordId = -1;
-
         //for each tree building record
         foreach (var record in sortedRecords)
         {   
             //create a new tree with empty list of children
-            var t = new Tree(record.RecordId, record.ParentId);
+            var newTree = new Tree(record.RecordId, record.ParentId);
 
             //add that tree to the list of trees
-            trees.Add(t);
-
-            //increase prev record id
-            ++previousRecordId;
+            trees.Add(newTree);
         }
 
         //start with first tree with id == 1
@@ -61,14 +53,13 @@ public static class TreeBuilder
         //increment through all remaining trees 
         for (int i = 1; i < trees.Count; i++)
         {
-            var t = trees.First(x => x.Id == i);
-            var parent = trees.First(x => x.Id == t.ParentId);
-            parent.Children.Add(t);
+            var childTree = trees.Single(t => t.Id == i);
+            var parentTree = trees.Single(t => t.Id == childTree.ParentId);
+            parentTree.Children.Add(childTree);
         }
 
         //return the first tree with id==0 - this the the root tree, and will have all the other trees inside its children lists
-        var r = trees.First(t => t.Id == 0);
-        return r;
+       return trees.Single(t => t.Id == 0);
     }
 
     private static string ValidateRecords (IEnumerable<TreeBuildingRecord> records)
