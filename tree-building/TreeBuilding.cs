@@ -34,10 +34,6 @@ public static class TreeBuilder
 
         var trees = records.Select(tbr => new Tree(tbr.RecordId, tbr.ParentId)).ToList();
 
-        //start with first tree with id == 1
-        //get that tree's parent
-        //go to the parent's children list and add the tree
-        //increment through all remaining trees 
         for (int i = 1; i < trees.Count; i++)
         {
             var childTree = trees.Single(t => t.Id == i);
@@ -45,7 +41,6 @@ public static class TreeBuilder
             parentTree.Children.Add(childTree);
         }
 
-        //return the tree with id==0 - this the the root tree, and will have all the other trees inside its children lists
        return trees.Single(t => t.Id == 0);
     }
 
