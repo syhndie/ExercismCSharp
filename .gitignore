@@ -267,3 +267,4 @@ __pycache__/
 *.csproj
 *.sln
 
+*.json
